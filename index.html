@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07111f"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Winter Arc">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg">
+<title>Winter Arc Tracker</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 20% 0,#153451,#06101c 38%,#030912);color:#eef7ff;font:15px system-ui,sans-serif}.app{max-width:760px;margin:auto;padding:20px 16px 70px}.top,.sectionhead,.nav{display:flex;justify-content:space-between;align-items:center}.brand{font-weight:900;letter-spacing:.12em;color:#b9efff}.date,.sub,.label,.meta,.hint,footer,.muted{color:#8ea7bd}.date,.label{font-size:12px}.label{text-transform:uppercase;letter-spacing:.1em}h1{font-size:32px;margin:10px 0 3px}.sub{margin:0 0 18px}.card{background:#0c1a2aee;border:1px solid #1c344c;border-radius:22px;padding:17px;margin:12px 0}.hero{display:grid;grid-template-columns:1fr 110px;align-items:center}.big{font-size:40px;font-weight:900}.streak{font-weight:800;color:#b9efff}.ring{width:100px;height:100px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#72d7ff var(--p),#1a3047 0);position:relative}.ring:after{content:"";position:absolute;inset:10px;border-radius:50%;background:#081522}.ring span{z-index:1;font-weight:900}.sectionhead{margin:20px 2px 8px}.sectionhead h2{font-size:18px;margin:0}.btn{border:1px solid #2c506e;background:#112b43;color:#b9efff;padding:9px 12px;border-radius:12px;font-weight:800;cursor:pointer}.primary{background:#72d7ff;color:#03101b;border:0}.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.tab{padding:11px;border-radius:13px;background:#071522;border:1px solid #1c344c;color:#8ea7bd;font-weight:800}.tab.active{background:#153451;color:#b9efff;border-color:#2c506e}.habit{display:flex;align-items:center;gap:12px;padding:13px 2px;border-bottom:1px solid #1c344c}.habit:last-child{border:0}.check{width:29px;height:29px;border-radius:9px;border:1px solid #3b5d77;background:#071522;color:#03101b;font-weight:900}.done{background:#79e2b0;border-color:#79e2b0}.hname{flex:1;font-weight:750}.del{background:none;border:0;color:#61788d;font-size:18px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#071522;border:1px solid #1c344c;border-radius:15px;padding:12px}.stat b{font-size:22px}.stat span{display:block;color:#8ea7bd;font-size:11px}.form{display:grid;grid-template-columns:1fr auto;gap:8px}input{width:100%;background:#071522;color:#eef7ff;border:1px solid #29465f;border-radius:12px;padding:12px;font-size:15px}footer{text-align:center;font-size:11px;margin-top:24px}.empty{text-align:center;color:#8ea7bd;padding:25px}.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#dff8ff;color:#03101b;padding:10px 14px;border-radius:13px;font-weight:800;display:none;z-index:5}.toast.show{display:block}.calhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.month{font-weight:900;font-size:17px}.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}.dow{text-align:center;color:#607c93;font-size:10px;padding:4px 0}.day{min-height:43px;border:1px solid #173047;background:#071522;color:#b7ccdc;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;cursor:pointer}.day.blank{background:transparent;border-color:transparent;cursor:default}.day.selected{border-color:#72d7ff;box-shadow:0 0 0 1px #72d7ff inset}.day.perfect{background:#123326;border-color:#34765b}.day.partial{background:#152d3d}.dot{font-size:8px;color:#79e2b0;line-height:8px}.selectedDate{font-weight:900;color:#b9efff}.back{margin-bottom:8px}
+@media(max-width:500px){.hero{grid-template-columns:1fr 100px}.ring{width:92px;height:92px}.big{font-size:36px}.app{padding-top:16px}}
+</style></head><body><main class="app">
+<div class="top"><div class="brand">❄ WINTER ARC</div><div class="date" id="topDate"></div></div>
+<h1>Build your best self.</h1><p class="sub">One day at a time. No excuses.</p>
+<div class="tabs"><button class="tab active" id="todayTab" onclick="showPage('today')">Today</button><button class="tab" id="historyTab" onclick="showPage('history')">📅 History</button></div>
+
+<section id="todayPage">
+<div class="card hero"><div><div class="label">Today's progress</div><div class="big" id="progress">0 / 0</div><div class="streak" id="streak">🔥 0 day streak</div></div><div class="ring" id="ring"><span id="pct">0%</span></div></div>
+<div class="sectionhead"><h2>Today's habits</h2><button class="btn" onclick="document.getElementById('input').focus()">＋ Add</button></div>
+<div class="card" id="list"></div>
+<div class="sectionhead"><h2>Your stats</h2></div>
+<div class="card stats"><div class="stat"><b id="best">0</b><span>Best streak</span></div><div class="stat"><b id="perfect">0</b><span>Perfect days</span></div><div class="stat"><b id="total">0</b><span>Total completions</span></div></div>
+<div class="sectionhead"><h2>Add a habit</h2></div><div class="card"><div class="form"><input id="input" maxlength="50" placeholder="e.g. 2 hours NEET study"><button class="btn primary" onclick="add()">Add</button></div><div class="hint">Gym • NEET Study • 3L Water • Reading • Walk • Sleep on time</div></div>
+</section>
+
+<section id="historyPage" style="display:none">
+<div class="sectionhead"><h2>Habit History</h2><button class="btn" onclick="goToday()">Today</button></div>
+<div class="card">
+<div class="calhead"><button class="btn" onclick="moveMonth(-1)">‹</button><div class="month" id="monthTitle"></div><button class="btn" onclick="moveMonth(1)">›</button></div>
+<div class="cal" id="calendar"></div>
+</div>
+<div class="sectionhead"><h2 id="selectedTitle"></h2></div>
+<div class="card"><div class="muted" style="margin-bottom:8px">Tap any habit to mark it complete for this date.</div><div id="historyList"></div></div>
+</section>
+<footer>Saved on this device • Your history stays in this browser</footer></main><div class="toast" id="toast"></div>
+
+<script>
+const K="winterArcPWA2";
+let s=JSON.parse(localStorage.getItem(K)||"null")||{habits:[{id:1,name:"Gym",h:{}},{id:2,name:"NEET Study",h:{}},{id:3,name:"3L Water",h:{}},{id:4,name:"Walk",h:{}},{id:5,name:"Sleep on time",h:{}}]};
+let selected=new Date().toISOString().slice(0,10), calMonth=new Date(new Date().getFullYear(),new Date().getMonth(),1);
+const day=()=>new Date().toISOString().slice(0,10),save=()=>localStorage.setItem(K,JSON.stringify(s));
+const done=(x,d)=>!!x.h[d];
+function toggle(id,d=day()){let x=s.habits.find(a=>a.id===id);if(!x)return;x.h[d]=!x.h[d];if(!x.h[d])delete x.h[d];save();render();if(document.getElementById("historyPage").style.display!=="none")renderHistory();toast(x.h[d]?"Habit completed ✓":"Habit unchecked")}
+function add(){let i=document.getElementById("input"),n=i.value.trim();if(!n)return;s.habits.push({id:Date.now(),name:n,h:{}});i.value="";save();render();toast("Habit added ✓")}
+function del(id){if(confirm("Delete this habit?")){s.habits=s.habits.filter(x=>x.id!==id);save();render();renderHistory()}}
+function streak(){let n=0,d=new Date;while(s.habits.length&&s.habits.every(x=>done(x,d.toISOString().slice(0,10)))){n++;d.setDate(d.getDate()-1)}return n}
+function perfect(){let ds=new Set;s.habits.forEach(x=>Object.keys(x.h).forEach(d=>ds.add(d)));let n=0;ds.forEach(d=>{if(s.habits.length&&s.habits.every(x=>done(x,d)))n++});return n}
+function best(){let ds=new Set;s.habits.forEach(x=>Object.keys(x.h).forEach(d=>ds.add(d)));let a=[...ds].sort(),b=0,r=0,p=null;for(let d of a){if(p&&((new Date(d)-new Date(p))/86400000!==1))r=0;r++;b=Math.max(b,r);p=d}return b}
+function render(){let d=day(),n=s.habits.length,c=s.habits.filter(x=>done(x,d)).length,p=n?Math.round(c/n*100):0;document.getElementById("topDate").textContent=new Date().toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});document.getElementById("progress").textContent=c+" / "+n;document.getElementById("pct").textContent=p+"%";document.getElementById("ring").style.setProperty("--p",p+"%");document.getElementById("streak").textContent="🔥 "+streak()+" day"+(streak()==1?"":"s")+" streak";document.getElementById("best").textContent=best();document.getElementById("perfect").textContent=perfect();document.getElementById("total").textContent=s.habits.reduce((a,x)=>a+Object.keys(x.h).length,0);document.getElementById("list").innerHTML=n?s.habits.map(x=>`<div class="habit"><button class="check ${done(x,d)?"done":""}" onclick="toggle(${x.id})">${done(x,d)?"✓":""}</button><div class="hname">${esc(x.name)}<div class="meta">${done(x,d)?"Completed today":"Not completed yet"}</div></div><button class="del" onclick="del(${x.id})">⋮</button></div>`).join(""):'<div class="empty">Add your first habit below.</div>'}
+function showPage(p){document.getElementById("todayPage").style.display=p==="today"?"block":"none";document.getElementById("historyPage").style.display=p==="history"?"block":"none";document.getElementById("todayTab").classList.toggle("active",p==="today");document.getElementById("historyTab").classList.toggle("active",p==="history");if(p==="history")renderHistory()}
+function moveMonth(n){calMonth=new Date(calMonth.getFullYear(),calMonth.getMonth()+n,1);renderHistory()}
+function goToday(){selected=day();calMonth=new Date();renderHistory()}
+function renderHistory(){
+let y=calMonth.getFullYear(),m=calMonth.getMonth(),name=calMonth.toLocaleDateString(undefined,{month:"long",year:"numeric"});document.getElementById("monthTitle").textContent=name;
+let first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate(),out=["Su","Mo","Tu","We","Th","Fr","Sa"].map(x=>`<div class="dow">${x}</div>`).join("");
+for(let i=0;i<first;i++)out+='<div class="day blank"></div>';
+for(let d=1;d<=days;d++){let ds=`${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`,c=s.habits.filter(x=>done(x,ds)).length,n=s.habits.length,cl=selected===ds?"selected ":"";if(n&&c===n)cl+="perfect";else if(c)cl+="partial";out+=`<button class="day ${cl}" onclick="selectDate('${ds}')"><b>${d}</b>${c?`<span class="dot">● ${c}/${n}</span>`:""}</button>`}
+document.getElementById("calendar").innerHTML=out;document.getElementById("selectedTitle").textContent=new Date(selected+"T12:00:00").toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+document.getElementById("historyList").innerHTML=s.habits.length?s.habits.map(x=>`<div class="habit"><button class="check ${done(x,selected)?"done":""}" onclick="toggle(${x.id},'${selected}')">${done(x,selected)?"✓":""}</button><div class="hname">${esc(x.name)}<div class="meta">${done(x,selected)?"Completed":"Not completed"}</div></div></div>`).join(""):'<div class="empty">Add a habit from Today first.</div>';
+}
+function selectDate(ds){selected=ds;let d=new Date(ds+"T12:00:00");calMonth=new Date(d.getFullYear(),d.getMonth(),1);renderHistory()}
+function esc(x){return x.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function toast(t){let x=document.getElementById("toast");x.textContent=t;x.className="toast show";setTimeout(()=>x.className="toast",1200)}
+document.getElementById("input").onkeydown=e=>{if(e.key==="Enter")add()};render();
+if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+</script></body></html>
